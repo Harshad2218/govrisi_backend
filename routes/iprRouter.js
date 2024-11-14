@@ -160,6 +160,21 @@ IPRRouter.post('/ipr/search', async (req, res) => {
   }
 });
 
+IPRRouter.post('/ipr/appynum', async (req, res) => {
+  const { applicationNumber } = req.body;
+  try {
+    const iprRecord = await ipr.findOne({ applicationNumber });
+    if (iprRecord) {
+      res.status(200).json(iprRecord); // Send the patent data back
+    } else {
+      res.status(404).json({ message: 'Application number is invalid' });
+    }
+  } catch (error) {
+    console.error('Error fetching application status:', error);
+    res.status(500).json({ message: 'An error occurred. Please try again.' });
+  }
+});
+
 
 IPRRouter.get("/ipr/open/file/:fileId", async (req, res) => {
   try {
